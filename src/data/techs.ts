@@ -1,0 +1,65 @@
+import type { Tech, TechId } from "@/data/types";
+import { l } from "@/i18n/localized";
+
+const TECH_LIST: readonly Tech[] = [
+  { id: "python", name: "Python", kind: "language", color: "#ffd43b", description: l("Mi hogar: backends, automatización, redes y casi todo lo demás.", "My home: backends, automation, networking and almost everything else.") },
+  { id: "typescript", name: "TypeScript", kind: "language", color: "#3178c6", description: l("JavaScript con tipos: donde viven mis interfaces y servicios Node.", "JavaScript with types: where my interfaces and Node services live.") },
+  { id: "javascript", name: "JavaScript", kind: "language", color: "#f7df1e", description: l("El origen del navegador. Hoy orbita muy cerca de TypeScript.", "Where the browser began. Today it orbits close to TypeScript.") },
+  { id: "cpp", name: "C++", kind: "language", color: "#00599c", description: l("Bajo nivel: memoria, punteros y la ingeniería inversa.", "Low level: memory, pointers and reverse engineering.") },
+  { id: "lua", name: "Lua", kind: "language", color: "#4a5bd6", description: l("Pequeña y ligera: scripting dentro de juegos.", "Small and light: scripting inside games.") },
+  { id: "html", name: "HTML", kind: "markup", color: "#e44d26", description: l("La estructura de todo lo que se ve en la web.", "The structure of everything you see on the web.") },
+  { id: "css", name: "CSS", kind: "markup", color: "#1572b6", description: l("La luz y el estilo de esa estructura.", "The light and style of that structure.") },
+  { id: "sql", name: "SQL", kind: "language", color: "#c9d4e3", description: l("El idioma de las bases de datos relacionales.", "The language of relational databases.") },
+  { id: "react", name: "React", kind: "framework", color: "#61dafb", description: l("Interfaces por componentes.", "Component-driven interfaces.") },
+  { id: "nextjs", name: "Next.js", kind: "framework", color: "#e8e8ff", description: l("React con servidor, rutas y renderizado híbrido.", "React with a server, routing and hybrid rendering.") },
+  { id: "fastapi", name: "FastAPI", kind: "framework", color: "#05998b", description: l("APIs rápidas, tipadas y documentadas solas.", "Fast, typed, self-documenting APIs.") },
+  { id: "flask", name: "Flask", kind: "framework", color: "#dfe7ec", description: l("Microframework web de Python.", "Python web microframework.") },
+  { id: "nodejs", name: "Node.js", kind: "framework", color: "#5fa04e", description: l("JavaScript del lado del servidor.", "JavaScript on the server.") },
+  { id: "express", name: "Express", kind: "library", color: "#d0d0d0", description: l("Servidor HTTP minimalista para Node y Bun.", "Minimal HTTP server for Node and Bun.") },
+  { id: "threejs", name: "Three.js", kind: "library", color: "#ffffff", description: l("3D en el navegador con WebGL.", "3D in the browser with WebGL.") },
+  { id: "tailwind", name: "Tailwind CSS", kind: "library", color: "#38bdf8", description: l("Estilos utilitarios.", "Utility-first styling.") },
+  { id: "zustand", name: "Zustand", kind: "library", color: "#8a6b45", description: l("Estado global sin ceremonia.", "Global state without the ceremony.") },
+  { id: "zod", name: "Zod", kind: "library", color: "#3e67b1", description: l("Validación de esquemas en TypeScript.", "Schema validation in TypeScript.") },
+  { id: "framer", name: "Framer Motion", kind: "library", color: "#bb4bff", description: l("Animaciones declarativas en React.", "Declarative animations in React.") },
+  { id: "reactrouter", name: "React Router", kind: "library", color: "#f44250", description: l("Rutas en el cliente.", "Client-side routing.") },
+  { id: "prisma", name: "Prisma", kind: "library", color: "#5a67d8", description: l("ORM tipado para Node.", "Typed ORM for Node.") },
+  { id: "sqlalchemy", name: "SQLAlchemy", kind: "library", color: "#d71f00", description: l("ORM y toolkit SQL de Python.", "Python ORM and SQL toolkit.") },
+  { id: "pydantic", name: "Pydantic", kind: "library", color: "#e92063", description: l("Validación de datos con type hints.", "Data validation with type hints.") },
+  { id: "vitest", name: "Vitest", kind: "library", color: "#729b1b", description: l("Pruebas rápidas sobre Vite.", "Fast tests on top of Vite.") },
+  { id: "pytest", name: "pytest", kind: "library", color: "#0a9edc", description: l("Pruebas en Python.", "Testing in Python.") },
+  { id: "nextintl", name: "next-intl", kind: "library", color: "#c7c7c7", description: l("Internacionalización para Next.js.", "Internationalization for Next.js.") },
+  { id: "discord", name: "Discord", kind: "library", color: "#5865f2", description: l("Bots y puentes de chat.", "Bots and chat bridges.") },
+  { id: "inquirer", name: "InquirerPy", kind: "library", color: "#b0b0b0", description: l("Menús interactivos en consola.", "Interactive console menus.") },
+  { id: "pywebview", name: "pywebview", kind: "library", color: "#9fb4c8", description: l("Ventanas nativas de escritorio con interfaz web y backend en Python.", "Native desktop windows with a web UI and a Python backend.") },
+  { id: "playwright", name: "Playwright", kind: "library", color: "#2ead33", description: l("Automatización de navegadores.", "Browser automation.") },
+  { id: "socketio", name: "Socket.IO", kind: "library", color: "#e8e8e8", description: l("Eventos en tiempo real entre cliente y servidor.", "Real-time events between client and server.") },
+  { id: "pyqt", name: "PyQt5", kind: "library", color: "#41cd52", description: l("Interfaces de escritorio con Qt.", "Desktop interfaces with Qt.") },
+  { id: "mysql", name: "MySQL", kind: "database", color: "#00758f", description: l("Masivo y relacional, con gravedad de servidor.", "Massive and relational, with server-sized gravity.") },
+  { id: "sqlite", name: "SQLite", kind: "database", color: "#0f80cc", description: l("Compacto: un archivo y un horizonte de eventos.", "Compact: one file and one event horizon.") },
+  { id: "postgresql", name: "PostgreSQL", kind: "database", color: "#4169e1", description: l("El más denso: transacciones, tipos ricos y un servidor por servicio.", "The densest: transactions, rich types and one server per service.") },
+  { id: "mongodb", name: "MongoDB", kind: "database", color: "#47a248", description: l("Documentos flexibles, sin esquema fijo.", "Flexible documents without a fixed schema.") },
+  { id: "supabase", name: "Supabase", kind: "tool", color: "#3ecf8e", description: l("PostgreSQL gestionado en producción.", "Managed PostgreSQL in production.") },
+  { id: "git", name: "Git", kind: "tool", color: "#f05032", description: l("Control de versiones.", "Version control.") },
+  { id: "github", name: "GitHub", kind: "tool", color: "#f0f0f0", description: l("Donde viven mis repositorios.", "Where my repositories live.") },
+  { id: "githubactions", name: "GitHub Actions", kind: "tool", color: "#2088ff", description: l("Integración continua en cada push.", "Continuous integration on every push.") },
+  { id: "vscode", name: "VS Code", kind: "tool", color: "#23a9f2", description: l("Mi editor.", "My editor.") },
+  { id: "docker", name: "Docker", kind: "tool", color: "#2496ed", description: l("Contenedores y entornos reproducibles.", "Containers and reproducible environments.") },
+  { id: "linux", name: "Linux", kind: "tool", color: "#f5c518", description: l("El sistema bajo los servidores.", "The system under the servers.") },
+  { id: "ubuntu", name: "Ubuntu", kind: "tool", color: "#e95420", description: l("Mi distribución de servidor.", "My server distribution.") },
+  { id: "nginx", name: "Nginx", kind: "tool", color: "#009639", description: l("Proxy inverso y servidor web.", "Reverse proxy and web server.") },
+  { id: "vite", name: "Vite", kind: "tool", color: "#a855f7", description: l("Bundler y servidor de desarrollo.", "Bundler and dev server.") },
+  { id: "bun", name: "Bun", kind: "tool", color: "#fbf0df", description: l("Runtime y gestor de paquetes.", "Runtime and package manager.") },
+  { id: "cloudflare", name: "Cloudflare", kind: "tool", color: "#f38020", description: l("Turnstile contra bots en mis formularios.", "Turnstile against bots on my forms.") },
+  { id: "mkdocs", name: "MkDocs", kind: "tool", color: "#526cfe", description: l("Documentación técnica bilingüe.", "Bilingual technical documentation.") },
+  { id: "cmake", name: "CMake", kind: "tool", color: "#064f8c", description: l("Compilación de proyectos C++.", "Builds for C++ projects.") },
+  { id: "ghidra", name: "Ghidra", kind: "tool", color: "#d33833", description: l("Desensamblador para ingeniería inversa.", "Disassembler for reverse engineering.") },
+  { id: "blender", name: "Blender", kind: "tool", color: "#ea7600", description: l("Modelado 3D, también por script en Python.", "3D modeling, also scripted with Python.") },
+];
+
+export const TECHS: Readonly<Record<TechId, Tech>> = Object.fromEntries(
+  TECH_LIST.map((tech: Tech): [TechId, Tech] => [tech.id, tech]),
+) as Record<TechId, Tech>;
+
+export function getTech(id: TechId): Tech {
+  return TECHS[id];
+}
