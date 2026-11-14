@@ -15,6 +15,15 @@ import { SpaceLabel } from "@/scene/SpaceLabel";
 import { journey } from "@/state/journey";
 import { type Focus, useUniverse } from "@/state/store";
 
+/** Galaxies fade out past this journey stop, once the black holes come into view. */
+const GALAXIES_UNTIL: number = 7.1;
+/** Galaxy labels wait until the learning belt is behind, so they never cover it. */
+const LABELS_FROM: number = 2.55;
+
+function galaxiesReachable(): boolean {
+  return journey.stop >= LABELS_FROM;
+}
+
 const PARTICLES: Readonly<Record<Galaxy["size"], number>> = { major: 14000, medium: 8000, dwarf: 3500 };
 
 interface GalaxyViewProps {
@@ -69,11 +78,12 @@ export function GalaxyView({ galaxy, density }: GalaxyViewProps): JSX.Element {
   const systems: readonly SolarSystem[] = systemsOf(galaxy.id);
   const projectCount: number = projectsInGalaxy(galaxy.id).length;
   const [hovered, setHovered] = useState<boolean>(false);
-  const pointer = usePointerCursor(setHovered);
+  const pointer = usePointerCursor(setHovered, galaxiesReachable);
   const [coreMaterial, setCoreMaterial] = useState<SpriteMaterial | null>(null);
   const center: Vector3 = useMemo((): Vector3 => new Vector3(...galaxy.position), [galaxy.position]);
   const systemsGroup = useRef<Group>(null);
   const body = useRef<Group>(null);
+  const labelGroup = useRef<Group>(null);
 
   const geometry: BufferGeometry = useMemo(
     (): BufferGeometry => buildGeometry(galaxy, radius, Math.round(PARTICLES[galaxy.size] * density)),
@@ -82,7 +92,7 @@ export function GalaxyView({ galaxy, density }: GalaxyViewProps): JSX.Element {
   const material: ShaderMaterial = useMemo(
     (): ShaderMaterial =>
       new ShaderMaterial({
-        uniforms: { uTime: { value: 0 }, uRadius: { value: radius }, uScale: { value: 400 }, uOpacity: { value: 1 } },
+        uniforms: { uTime: { value: 0 }, uRadius: { value: radius }, uScale: { value: 400 }, uOpacity: { value: 0 } },
         vertexShader: GALAXY_VERTEX,
         fragmentShader: GALAXY_FRAGMENT,
         transparent: true,
@@ -101,16 +111,18 @@ export function GalaxyView({ galaxy, density }: GalaxyViewProps): JSX.Element {
     (uniforms.uTime as { value: number }).value = state.clock.elapsedTime;
     const fov: number = (state.camera as { fov?: number }).fov ?? 55;
     (uniforms.uScale as { value: number }).value = (state.size.height * state.viewport.dpr * 0.5) / Math.tan((fov * Math.PI) / 360) * 0.5;
-    const reveal: number = clamp((400 - journey.viewer.distanceTo(center)) / 150) * clamp((6.1 - journey.stop) / 0.4) * clamp((journey.stop - 1.4) / 0.6);
+    const reveal: number = clamp((400 - journey.viewer.distanceTo(center)) / 150) * clamp((GALAXIES_UNTIL - journey.stop) / 0.4) * clamp((journey.stop - 1.4) / 0.6);
     const target: number = here ? (systemId ? 0.3 : 0.75) : (anyFocus ? 0.12 : hovered ? 1.35 : 1) * reveal;
     const opacity = uniforms.uOpacity as { value: number };
     opacity.value += (target - opacity.value) * dampFactor(4, delta);
     if (coreMaterial) coreMaterial.opacity = opacity.value * 0.9;
     if (systemsGroup.current) systemsGroup.current.visible = here || reveal > 0.05;
     if (body.current) body.current.visible = here || opacity.value > 0.004;
+    if (labelGroup.current) labelGroup.current.visible = journey.stop > LABELS_FROM && reveal > 0.3;
   });
 
   const enter = (event?: ThreeEvent<MouseEvent>): void => {
+    if (event && journey.stop < LABELS_FROM) return;
     event?.stopPropagation();
     setFocus({ kind: "galaxy", id: galaxy.id });
   };
@@ -142,21 +154,25 @@ export function GalaxyView({ galaxy, density }: GalaxyViewProps): JSX.Element {
           ))}
         </group>
       </group>
-      <SpaceLabel
-        position={[galaxy.position[0], galaxy.position[1] - radius * 0.62, galaxy.position[2]]}
-        far={radius * 6}
-        visible={!anyFocus}
-      >
-        <button type="button" className="space-label" data-hovered={hovered} onClick={(): void => enter()}>
-          <span className="space-label__title">{tech.name}</span>
-          <span className="space-label__body">{tx(galaxy.description)}</span>
-          <span className="space-label__cta">
-            {systems.length > 0
-              ? `${m.labels.systems(systems.length)} · ${m.labels.projects(projectCount)} · ${m.labels.enter}`
-              : `${m.labels.companion} · ${m.labels.enter}`}
-          </span>
-        </button>
-      </SpaceLabel>
+      <group ref={labelGroup} visible={false}>
+        <SpaceLabel
+          position={[galaxy.position[0], galaxy.position[1] - radius * 0.62, galaxy.position[2]]}
+          far={radius * 6}
+          visible={!anyFocus}
+          collide
+          priority={hovered ? 1 : 0}
+        >
+          <button type="button" className="space-label" data-hovered={hovered} onClick={(): void => enter()}>
+            <span className="space-label__title">{tech.name}</span>
+            <span className="space-label__body">{tx(galaxy.description)}</span>
+            <span className="space-label__cta">
+              {systems.length > 0
+                ? `${m.labels.systems(systems.length)} · ${m.labels.projects(projectCount)} · ${m.labels.enter}`
+                : `${m.labels.companion} · ${m.labels.enter}`}
+            </span>
+          </button>
+        </SpaceLabel>
+      </group>
     </>
   );
 }
