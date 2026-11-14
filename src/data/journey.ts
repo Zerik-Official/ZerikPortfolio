@@ -30,9 +30,10 @@ export const KEYFRAMES: readonly Keyframe[] = [
   { chapter: "pilot", position: [0, 2, -40], lookAt: [0, 0, -140] },
   { chapter: "learning", position: [0, 9, -132], lookAt: [0, -4, -205] },
   { chapter: "galaxies", position: [-18, 28, -212], lookAt: [-72, 6, -360] },
-  { chapter: "galaxies", position: [52, 30, -370], lookAt: [118, 14, -580] },
+  { chapter: "galaxies", position: [10, 34, -440], lookAt: [92, 22, -470] },
+  { chapter: "galaxies", position: [12, 30, -498], lookAt: [96, -10, -612] },
   { chapter: "galaxies", position: [-30, 24, -560], lookAt: [-62, 4, -720] },
-  { chapter: "blackholes", position: [0, 10, -866], lookAt: [0, 0, -1020] },
+  { chapter: "blackholes", position: [0, 0, -900], lookAt: [0, -10, -1004] },
   { chapter: "tools", position: [-14, 9, -1172], lookAt: [-8, 7, -1262] },
   { chapter: "contact", position: [0, 8, -1340], lookAt: [0, -26, -1460] },
 ];
