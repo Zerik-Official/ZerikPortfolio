@@ -98,7 +98,7 @@ export function ToolConstellation(): JSX.Element {
               transparent
               opacity={touches ? 0.95 : activeTool ? 0.08 : 0.3}
             />
-            <SpaceLabel position={midpoint(link)} far={150} visible={touches && selection.kind === "tool"}>
+            <SpaceLabel position={midpoint(link)} far={150} visible={touches && selection.kind === "tool"} collide>
               <span className="link-tag">{tx(link.relation)}</span>
             </SpaceLabel>
           </group>
