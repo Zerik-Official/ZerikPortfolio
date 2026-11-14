@@ -8,11 +8,17 @@ interface PointerHandlers {
   readonly onPointerOut: (event: ThreeEvent<PointerEvent>) => void;
 }
 
-/** Pointer handlers that toggle the hand cursor and report hover state. */
-export function usePointerCursor(onHoverChange?: (hovered: boolean) => void): PointerHandlers {
+/**
+ * Pointer handlers that toggle the hand cursor and report hover state.
+ *
+ * Touch input never hovers: a tap would otherwise leave the body "hovered"
+ * (and its card expanded) until the next tap somewhere else.
+ */
+export function usePointerCursor(onHoverChange?: (hovered: boolean) => void, enabled?: () => boolean): PointerHandlers {
   return useMemo(
     (): PointerHandlers => ({
       onPointerOver: (event: ThreeEvent<PointerEvent>): void => {
+        if (event.pointerType === "touch" || (enabled && !enabled())) return;
         event.stopPropagation();
         useUniverse.getState().setHovering(true);
         onHoverChange?.(true);
@@ -22,6 +28,6 @@ export function usePointerCursor(onHoverChange?: (hovered: boolean) => void): Po
         onHoverChange?.(false);
       },
     }),
-    [onHoverChange],
+    [onHoverChange, enabled],
   );
 }
