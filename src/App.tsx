@@ -4,6 +4,7 @@ import { KEYFRAMES } from "@/data/journey";
 import { useDocumentLocale } from "@/i18n/useI18n";
 import { useUniverse } from "@/state/store";
 import { Contact } from "@/ui/Contact";
+import { ExploreToggle } from "@/ui/ExploreToggle";
 import { FocusPanel } from "@/ui/FocusPanel";
 import { Hud } from "@/ui/Hud";
 import { LabelLayer } from "@/ui/LabelLayer";
@@ -20,7 +21,8 @@ export function App(): JSX.Element {
     const onKey = (event: KeyboardEvent): void => {
       if (event.key !== "Escape") return;
       const store = useUniverse.getState();
-      if (store.projectId || store.focus.kind !== "none") store.goBack();
+      if (store.exploring) store.setExploring(false);
+      else if (store.projectId || store.focus.kind !== "none") store.goBack();
       else store.select({ kind: "none" });
     };
     window.addEventListener("keydown", onKey);
@@ -35,6 +37,7 @@ export function App(): JSX.Element {
         <Intro />
         <About />
         <ChapterTitle />
+        <ExploreToggle />
         <Contact />
         <ProjectIndex />
       </main>
