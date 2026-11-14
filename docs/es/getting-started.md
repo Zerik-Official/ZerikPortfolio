@@ -21,6 +21,7 @@ bun install
 | `bun run typecheck` | Ejecuta el compilador de TypeScript sin generar archivos. |
 | `bun run build` | Verifica los tipos y genera el bundle de producción en `dist/`. |
 | `bun run preview` | Sirve `dist/` en local para revisar el build de producción. |
+| `python scripts/generate_previews.py` | Regenera la imagen de Open Graph y las vistas previas del README (ver [despliegue](deployment.md#vistas-previas-para-redes)). |
 
 ## Banda sonora en desarrollo
 
@@ -44,6 +45,7 @@ src/
 ├── scene/        # Componentes de React Three Fiber del universo 3D
 ├── state/        # Stores de Zustand y estado del viaje por cuadro
 └── ui/           # Capas DOM: HUD, paneles, ficha de proyecto y contacto
+scripts/          # Generador de imágenes de vista previa (Python)
 ```
 
 Sigue con la [arquitectura](architecture.md).
