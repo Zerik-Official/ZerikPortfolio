@@ -1,4 +1,4 @@
-import { AdaptiveDpr, PerformanceMonitor } from "@react-three/drei";
+import { AdaptiveDpr, PerformanceMonitor, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { type JSX, useState } from "react";
@@ -48,21 +48,23 @@ export function Universe(): JSX.Element {
         <GalaxyView key={galaxy.id} galaxy={galaxy} density={density} />
       ))}
       {NEBULAE.map((nebula: Nebula): JSX.Element => (
-        <StopGate key={nebula.id} from={3.2} to={5.8}>
+        <StopGate key={nebula.id} from={3.2} to={6.8}>
           <NebulaView nebula={nebula} />
         </StopGate>
       ))}
-      <StopGate from={5.2} to={6.6}>
+      <StopGate from={6.2} to={7.6}>
         {BLACK_HOLES.map((hole: BlackHole): JSX.Element => (
           <BlackHoleView key={hole.techId} hole={hole} />
         ))}
       </StopGate>
-      <StopGate from={6.2} to={8}>
+      <StopGate from={7.2} to={8.6}>
         <ToolConstellation />
       </StopGate>
-      <StopGate from={7.35} to={8}>
+      <StopGate from={8.35} to={9}>
         <Earth />
       </StopGate>
+      {/* Compiles every shader and uploads every texture up front, so no chapter stalls the first time it appears. */}
+      <Preload all />
       {bloom && (
         <EffectComposer multisampling={0}>
           <Bloom mipmapBlur intensity={1.05} luminanceThreshold={0.18} luminanceSmoothing={0.3} resolutionScale={0.5} />
