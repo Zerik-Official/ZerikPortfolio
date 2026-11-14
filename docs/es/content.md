@@ -58,8 +58,8 @@ Edita `src/data/tools.ts`: `TOOL_NODES` ubica cada herramienta en la constelaci�
 
 ## Agregar un proyecto de formación
 
-Añádelo a `ASTEROIDS` en `src/data/learning.ts`. El cinturón reparte solo los asteroides con nombre.
+Añádelo a `ASTEROIDS` en `src/data/learning.ts`. El cinturón reparte solo los asteroides con nombre: en arco en pantallas anchas y en filas de tres en pantallas verticales.
 
 ## Enlaces de contacto
 
-`SOCIAL_LINKS` en `src/data/journey.ts`. Los logos salen de `SOCIAL_ICONS` en `src/lib/icons.ts`.
+`SOCIAL_LINKS` en `src/data/journey.ts`. Los logos salen de `SOCIAL_ICONS` en `src/lib/icons.ts`. Cada enlace pasa por la transmisión de contacto descrita en la [arquitectura](architecture.md#transmisión-de-contacto).
