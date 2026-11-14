@@ -84,9 +84,14 @@ export function BlackHoleView({ hole }: { readonly hole: BlackHole }): JSX.Eleme
       <sprite scale={[42, 42, 1]}>
         <spriteMaterial map={getGlowTexture()} color={tech.color} transparent opacity={0.22} blending={AdditiveBlending} depthWrite={false} />
       </sprite>
-      <mesh onClick={enter} {...pointer}>
+      <mesh>
         <sphereGeometry args={[HORIZON, 64, 64]} />
         <meshBasicMaterial color="#000000" />
+      </mesh>
+      {/* Generous invisible hit area, so the smaller holes are easy to tap. */}
+      <mesh onClick={enter} {...pointer}>
+        <sphereGeometry args={[HORIZON * 2.6, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
       </mesh>
       <group rotation={[Math.PI / 2 - 0.22, 0, 0.12]}>
         <mesh material={disc}>
@@ -99,8 +104,8 @@ export function BlackHoleView({ hole }: { readonly hole: BlackHole }): JSX.Eleme
         </mesh>
       </Billboard>
       <TechBadge techId={hole.techId} size={3} position={[0, HORIZON * 2.6, 0]} onClick={enter} {...pointer} />
-      <SpaceLabel position={[0, -HORIZON * 2.4, 0]} far={200} visible={!anyFocus || focused}>
-        <button type="button" className="space-label" data-hovered={hovered} onClick={(): void => enter()}>
+      <SpaceLabel position={[0, -HORIZON * 2.4, 0]} far={260} visible={!anyFocus || focused} collide priority={hovered || focused ? 1 : 0}>
+        <button type="button" className="space-label space-label--compact" data-hovered={hovered} onClick={(): void => enter()}>
           <span className="space-label__title">{tech.name}</span>
           <span className="space-label__cta">
             {orbiting > 0 ? m.labels.orbiting(orbiting) : m.labels.noPublicProjects}
