@@ -101,7 +101,7 @@ function NamedAsteroid({ asteroid, position, index }: NamedAsteroidProps): JSX.E
         </mesh>
       </group>
       <TechBadge techId={asteroid.techId} size={active ? 2.1 : 1.7} position={[0, 2.8, 0]} onClick={choose} {...pointer} />
-      <SpaceLabel position={[0, -2.6, 0]} far={70}>
+      <SpaceLabel position={[0, -2.6, 0]} far={70} collide priority={active ? 1 : 0}>
         <button type="button" className="asteroid-tag" data-active={active} onClick={(): void => choose()}>
           {asteroid.name}
         </button>
@@ -110,18 +110,39 @@ function NamedAsteroid({ asteroid, position, index }: NamedAsteroidProps): JSX.E
   );
 }
 
+const PORTRAIT_COLUMNS: number = 3;
+
+/** Landscape: an arc along the front of the belt. */
+function arcPlacements(aspect: number): [number, number, number][] {
+  const spread: number = clamp(aspect * 0.55, 0.55, 1.15);
+  return ASTEROIDS.map((_: Asteroid, index: number): [number, number, number] => {
+    const t: number = ASTEROIDS.length === 1 ? 0.5 : index / (ASTEROIDS.length - 1);
+    const angle: number = (t - 0.5) * 2 * spread;
+    const radius: number = 40 + (index % 2) * 6;
+    return [Math.sin(angle) * radius, (index % 3) * 3 - 3, Math.cos(angle) * radius];
+  });
+}
+
+/**
+ * Portrait: a loose swarm of rows facing the camera, so the names stack
+ * vertically instead of piling up across a narrow screen.
+ */
+function swarmPlacements(): [number, number, number][] {
+  const random: () => number = createRandom(29);
+  return ASTEROIDS.map((_: Asteroid, index: number): [number, number, number] => {
+    const column: number = index % PORTRAIT_COLUMNS;
+    const row: number = Math.floor(index / PORTRAIT_COLUMNS);
+    const stagger: number = row % 2 === 0 ? -2 : 2;
+    return [(column - 1) * 17 + stagger + (random() - 0.5) * 1.5, 12 - row * 12, 40 + (random() - 0.5) * 6];
+  });
+}
+
 export function AsteroidBelt({ density }: { readonly density: number }): JSX.Element {
   const aspect: number = useThree((state) => state.size.width / state.size.height);
-  const spread: number = clamp(aspect * 0.55, 0.55, 1.15);
+  const portrait: boolean = aspect < 0.9;
   const placements: [number, number, number][] = useMemo(
-    (): [number, number, number][] =>
-      ASTEROIDS.map((_: Asteroid, index: number): [number, number, number] => {
-        const t: number = ASTEROIDS.length === 1 ? 0.5 : index / (ASTEROIDS.length - 1);
-        const angle: number = (t - 0.5) * 2 * spread;
-        const radius: number = 40 + (index % 2) * 6;
-        return [Math.sin(angle) * radius, (index % 3) * 3 - 3, Math.cos(angle) * radius];
-      }),
-    [spread],
+    (): [number, number, number][] => (portrait ? swarmPlacements() : arcPlacements(aspect)),
+    [portrait, aspect],
   );
 
   return (

@@ -86,3 +86,43 @@ export function loadBadgeTexture(techId: TechId): Promise<Texture> {
   badgeCache.set(techId, promise);
   return promise;
 }
+
+let flagPromise: Promise<Texture> | null = null;
+
+/**
+ * Colombia's flag as a badge like the technology logos. The SVG comes from
+ * country-flag-icons, so it renders the same on devices without flag emoji.
+ */
+export function loadFlagBadgeTexture(svg: string): Promise<Texture> {
+  if (flagPromise) return flagPromise;
+  const url: string = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  flagPromise = loadImage(url).then((image: HTMLImageElement): Texture => {
+    const canvas: HTMLCanvasElement = document.createElement("canvas");
+    canvas.width = canvas.height = BADGE_SIZE;
+    const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const center: number = BADGE_SIZE / 2;
+    const radius: number = BADGE_SIZE * 0.46;
+    context.fillStyle = "#f3ede2";
+    context.beginPath();
+    context.arc(center, center, radius, 0, Math.PI * 2);
+    context.fill();
+    context.save();
+    context.beginPath();
+    context.arc(center, center, radius * 0.86, 0, Math.PI * 2);
+    context.clip();
+    const height: number = radius * 1.72;
+    const width: number = height * 1.5;
+    context.drawImage(image, center - width / 2, center - height / 2, width, height);
+    context.restore();
+    context.lineWidth = BADGE_SIZE * 0.025;
+    context.strokeStyle = "#ffb36b";
+    context.beginPath();
+    context.arc(center, center, radius, 0, Math.PI * 2);
+    context.stroke();
+    const texture: CanvasTexture = new CanvasTexture(canvas);
+    texture.colorSpace = SRGBColorSpace;
+    texture.anisotropy = 4;
+    return texture;
+  });
+  return flagPromise;
+}

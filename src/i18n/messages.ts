@@ -7,7 +7,7 @@ function plural(count: number, one: string, many: string): string {
 
 export interface Messages {
   readonly meta: { readonly title: string; readonly description: string };
-  readonly intro: { readonly tagline: string; readonly role: string; readonly scroll: string };
+  readonly intro: { readonly tagline: string; readonly role: string; readonly quote: string; readonly scroll: string };
   readonly about: {
     readonly bio: string;
     readonly job: string;
@@ -21,6 +21,9 @@ export interface Messages {
     readonly language: string;
     readonly progress: string;
     readonly volume: string;
+    readonly explore: string;
+    readonly exploreDone: string;
+    readonly exploreHint: string;
   };
   readonly labels: {
     readonly systems: (count: number) => string;
@@ -69,7 +72,15 @@ export interface Messages {
     readonly live: string;
   };
   readonly selection: { readonly close: string; readonly usedBy: string; readonly viewRepository: string };
-  readonly contact: { readonly kicker: string; readonly title: string; readonly body: string };
+  readonly contact: {
+    readonly kicker: string;
+    readonly title: string;
+    readonly body: string;
+    readonly connecting: string;
+    readonly transmitting: (channel: string) => string;
+    readonly skip: string;
+    readonly blocked: string;
+  };
   readonly index: {
     readonly label: string;
     readonly projects: string;
@@ -88,11 +99,12 @@ const ES: Messages = {
   intro: {
     tagline: "Una expedición por mi universo",
     role: "FULL STACK DEVELOPER · COLOMBIA",
+    quote: "La programación es un universo inmenso, y yo soy el astronauta que recorre sus planetas.",
     scroll: "DESPLÁZATE PARA COMENZAR",
   },
   about: {
     bio: "Soy Andrés, conocido como Zerik. Llevo más de tres años automatizando procesos y construyendo herramientas que resuelven problemas reales. Python es mi hogar; la ingeniería inversa, mi curiosidad.",
-    job: "Desarrollador de automatización · NaerZone · 2023–2026",
+    job: "Desarrollador de automatización y Sub-Jefe del departamento · NaerZone · 2023–2026",
     study: "Desarrollo de Software · Riwi · Barranquilla",
     focus: [
       "Automatización end-to-end con Python y Playwright",
@@ -109,6 +121,9 @@ const ES: Messages = {
     language: "Cambiar a inglés",
     progress: "Progreso del viaje",
     volume: "Volumen",
+    explore: "Explorar",
+    exploreDone: "Listo",
+    exploreHint: "Arrastra para moverte por la constelación",
   },
   labels: {
     systems: (count: number): string => plural(count, "sistema", "sistemas"),
@@ -161,6 +176,10 @@ const ES: Messages = {
     kicker: "Fin de la expedición",
     title: "Abre un canal",
     body: "¿Un proyecto, una idea o una oportunidad? Encuéntrame en cualquiera de estas frecuencias.",
+    connecting: "Contactando…",
+    transmitting: (channel: string): string => `Enviando señal a ${channel}`,
+    skip: "Saltar",
+    blocked: "¿No se abrió? Toca para abrir ↗",
   },
   index: {
     label: "Índice de proyectos",
@@ -180,11 +199,12 @@ const EN: Messages = {
   intro: {
     tagline: "An expedition through my universe",
     role: "FULL STACK DEVELOPER · COLOMBIA",
+    quote: "Programming is an immense universe, and I am the astronaut who travels its planets.",
     scroll: "SCROLL TO BEGIN",
   },
   about: {
     bio: "I'm Andrés, known as Zerik. For more than three years I've been automating processes and building tools that solve real problems. Python is my home; reverse engineering, my curiosity.",
-    job: "Automation developer · NaerZone · 2023–2026",
+    job: "Automation developer and deputy head of the department · NaerZone · 2023–2026",
     study: "Software Development · Riwi · Barranquilla",
     focus: [
       "End-to-end automation with Python and Playwright",
@@ -201,6 +221,9 @@ const EN: Messages = {
     language: "Switch to Spanish",
     progress: "Journey progress",
     volume: "Volume",
+    explore: "Explore",
+    exploreDone: "Done",
+    exploreHint: "Drag to move around the constellation",
   },
   labels: {
     systems: (count: number): string => plural(count, "system", "systems"),
@@ -253,6 +276,10 @@ const EN: Messages = {
     kicker: "End of the expedition",
     title: "Open a channel",
     body: "A project, an idea or an opportunity? Find me on any of these frequencies.",
+    connecting: "Contacting…",
+    transmitting: (channel: string): string => `Sending signal to ${channel}`,
+    skip: "Skip",
+    blocked: "Didn't open? Tap to open it ↗",
   },
   index: {
     label: "Project index",

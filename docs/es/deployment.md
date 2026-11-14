@@ -32,3 +32,13 @@ La banda sonora supera el límite de 25 MiB por archivo de Pages, así que no fo
 ## Vistas previas para redes
 
 `public/og-image.png` (1200×630) es la imagen de Open Graph y Twitter Card. Las vistas previas del README están en `.github/preview.en.png` y `.github/preview.es.png`.
+
+Las tres se generan con `scripts/generate_previews.py` (Python 3.12 con Pillow y Playwright, después de `bun install`). Dibuja la galaxia y el título y añade una fila de insignias con el stack principal, usando los mismos logos del sitio:
+
+```bash
+python scripts/generate_previews.py
+python scripts/generate_previews.py --images og readme-en readme-es
+python scripts/generate_previews.py --stack python react fastapi mysql --images og
+```
+
+Sin `--images` pregunta qué imágenes generar. `--stack` recibe ids de tecnologías de `src/data/techs.ts`, hasta 8; por defecto Python, JavaScript, TypeScript, React, FastAPI, C++ y MySQL. Haz commit de las imágenes regeneradas; el despliegue publica el nuevo `og-image.png`.

@@ -23,18 +23,19 @@
   <strong>Español</strong> | <a href="./README.md">English</a>
 </p>
 
-Mi portafolio como una expedición 3D por mi universo, publicado en <https://zerikapi.site>. Cada lenguaje de programación es una galaxia, cada framework un sistema solar dentro de ella y cada proyecto un planeta con sus librerías como lunas. Las bases de datos son agujeros negros, las herramientas forman una constelación de relaciones y los proyectos de formación flotan en un cinturón de asteroides. El viaje avanza con el scroll, está en español e inglés y termina abriendo un canal en GitHub, Discord o LinkedIn.
+Mi portafolio como una expedición 3D por mi universo, publicado en <https://zerikapi.site>. Cada lenguaje de programación es una galaxia, cada framework un sistema solar dentro de ella y cada proyecto un planeta con sus librerías como lunas. Las bases de datos son agujeros negros, las herramientas forman una constelación de relaciones y los proyectos de formación flotan en un cinturón de asteroides. El viaje avanza con el scroll, está en español e inglés y termina enviando una señal desde la órbita hasta Colombia para abrir un canal en GitHub, Discord o LinkedIn.
 
 ## Stack tecnológico
 
 | Componente | Stack | Responsabilidad |
 | --- | --- | --- |
-| `src/scene` | React Three Fiber, Three.js, drei, postprocessing, GLSL propio | Galaxias, sistemas solares, agujeros negros, constelación, Tierra y recorrido de cámara |
+| `src/scene` | React Three Fiber, Three.js, drei, postprocessing, GLSL propio | Galaxias, sistemas solares, agujeros negros, constelación, Tierra con geografía real y recorrido de cámara |
 | `src/ui` | React 19, TypeScript, Tailwind CSS 4 | HUD, paneles de enfoque, ficha de proyecto, contacto e índice accesible de proyectos |
 | `src/data` | Registros tipados en TypeScript | Fuente única de lenguajes, frameworks, proyectos, herramientas y formación |
 | `src/i18n` | Zustand, catálogos de mensajes tipados | Español e inglés, detección del navegador y elección recordada |
 | `src/audio` | Audio HTML | Banda sonora en bucle con fundidos, reanudación y volumen recordado |
 | Entrega | Vite, Bun, GitHub Actions, Cloudflare Pages, R2 | Build, despliegue continuo y CDN de la banda sonora |
+| `scripts` | Python, Pillow, Playwright | Imágenes de Open Graph y de vista previa del README |
 
 Cada proyecto se define una sola vez y se ubica según su framework principal; los proyectos que abarcan varios stacks aparecen como ecos en los otros sistemas a los que llegan. Los logos vienen de Devicon y Simple Icons, y todas las etiquetas las posiciona un único proyector que las desvanece por distancia y resuelve los choques.
 
@@ -54,6 +55,7 @@ ZerikPortfolio/
 │   ├── state/                 # Stores de Zustand y estado por cuadro
 │   └── ui/                    # Capas DOM
 ├── public/                    # Favicon, imagen Open Graph, robots y sitemap
+├── scripts/                   # Generador de imágenes de vista previa (Python)
 ├── docs/
 │   ├── en/                    # Documentación en inglés
 │   └── es/                    # Documentación en español

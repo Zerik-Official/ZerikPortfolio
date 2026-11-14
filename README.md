@@ -23,18 +23,19 @@
   <a href="./README.es.md">Español</a> | <strong>English</strong>
 </p>
 
-My portfolio as a 3D expedition through my universe, live at <https://zerikapi.site>. Every programming language is a galaxy, every framework a solar system inside it, every project a planet with its libraries as moons. Databases are black holes, tools form a constellation of relationships, and training projects drift in an asteroid belt. The journey is driven by scroll, available in Spanish and English, and ends by opening a channel on GitHub, Discord or LinkedIn.
+My portfolio as a 3D expedition through my universe, live at <https://zerikapi.site>. Every programming language is a galaxy, every framework a solar system inside it, every project a planet with its libraries as moons. Databases are black holes, tools form a constellation of relationships, and training projects drift in an asteroid belt. The journey is driven by scroll, available in Spanish and English, and ends by sending a signal from orbit down to Colombia to open a channel on GitHub, Discord or LinkedIn.
 
 ## Tech stack
 
 | Component | Stack | Responsibility |
 | --- | --- | --- |
-| `src/scene` | React Three Fiber, Three.js, drei, postprocessing, custom GLSL | Galaxies, solar systems, black holes, constellation, Earth and camera journey |
+| `src/scene` | React Three Fiber, Three.js, drei, postprocessing, custom GLSL | Galaxies, solar systems, black holes, constellation, Earth with real geography and camera journey |
 | `src/ui` | React 19, TypeScript, Tailwind CSS 4 | HUD, focus panels, project record, contact and accessible project index |
 | `src/data` | Typed TypeScript records | Single source of truth for languages, frameworks, projects, tools and training |
 | `src/i18n` | Zustand, typed message catalogs | Spanish and English, browser detection and remembered choice |
 | `src/audio` | HTML audio | Looping soundtrack with fades, resume and remembered volume |
 | Delivery | Vite, Bun, GitHub Actions, Cloudflare Pages, R2 | Build, continuous deployment and soundtrack CDN |
+| `scripts` | Python, Pillow, Playwright | Open Graph and README preview images |
 
 Each project is defined once and placed by its main framework; projects that span stacks appear as echoes in the other systems they reach. Logos come from Devicon and Simple Icons, and all labels are positioned by a single projector that fades them by distance and resolves collisions.
 
@@ -54,6 +55,7 @@ ZerikPortfolio/
 │   ├── state/                 # Zustand stores and per-frame state
 │   └── ui/                    # DOM overlays
 ├── public/                    # Favicon, Open Graph image, robots and sitemap
+├── scripts/                   # Preview image generator (Python)
 ├── docs/
 │   ├── en/                    # English documentation
 │   └── es/                    # Spanish documentation

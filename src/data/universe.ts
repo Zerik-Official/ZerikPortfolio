@@ -16,19 +16,6 @@ export const GALAXIES: readonly Galaxy[] = [
     tilt: [1.05, 0.25],
   },
   {
-    id: "typescript",
-    techId: "typescript",
-    description: l(
-      "Donde viven mis interfaces y servicios Node. JavaScript orbita muy cerca.",
-      "Where my interfaces and Node services live. JavaScript orbits close by.",
-    ),
-    hue: 212,
-    size: "major",
-    arms: 3,
-    position: [76, -8, -520],
-    tilt: [1.15, -0.3],
-  },
-  {
     id: "javascript",
     techId: "javascript",
     description: l(
@@ -38,9 +25,22 @@ export const GALAXIES: readonly Galaxy[] = [
     hue: 54,
     size: "medium",
     arms: 2,
-    position: [186, 46, -652],
+    position: [92, 24, -470],
     tilt: [0.9, 0.5],
     companionOf: "typescript",
+  },
+  {
+    id: "typescript",
+    techId: "typescript",
+    description: l(
+      "Donde viven mis interfaces y servicios Node. JavaScript orbita muy cerca.",
+      "Where my interfaces and Node services live. JavaScript orbits close by.",
+    ),
+    hue: 212,
+    size: "major",
+    arms: 3,
+    position: [96, -10, -612],
+    tilt: [1.15, -0.3],
   },
   {
     id: "cpp",
@@ -161,25 +161,25 @@ export const BLACK_HOLES: readonly BlackHole[] = [
   {
     techId: "postgresql",
     description: l("El más denso: transacciones, tipos ricos y una base aislada por servicio.", "The densest: transactions, rich types and one isolated database per service."),
-    position: [0, -4, -990],
-    scale: 1.25,
+    position: [-30, 14, -1000],
+    scale: 1.1,
   },
   {
     techId: "sqlite",
     description: l("Compacto: un archivo y un horizonte de eventos. Ideal para backends autocontenidos.", "Compact: one file and one event horizon. Ideal for self-contained backends."),
-    position: [62, 14, -1035],
+    position: [30, -32, -1004],
     scale: 0.8,
   },
   {
     techId: "mysql",
     description: l("Masivo y relacional, con gravedad de servidor. Lo usé en producción en NaerZone y en CoDecide.", "Massive and relational, with server-sized gravity. I ran it in production at NaerZone and in CoDecide."),
-    position: [-58, 20, -1060],
-    scale: 0.75,
+    position: [30, 16, -1006],
+    scale: 0.85,
   },
   {
     techId: "mongodb",
     description: l("Un agujero distinto: documentos sin esquema fijo, junto a MySQL en CoDecide.", "A different kind of hole: schemaless documents, next to MySQL in CoDecide."),
-    position: [-30, -24, -1100],
-    scale: 0.55,
+    position: [-30, -34, -1008],
+    scale: 0.8,
   },
 ];

@@ -58,8 +58,8 @@ Edit `src/data/tools.ts`: `TOOL_NODES` places each tool in the constellation and
 
 ## Add a training project
 
-Append it to `ASTEROIDS` in `src/data/learning.ts`. The belt spreads named asteroids automatically.
+Append it to `ASTEROIDS` in `src/data/learning.ts`. The belt spreads named asteroids automatically: along an arc on wide screens and in rows of three on portrait screens.
 
 ## Contact links
 
-`SOCIAL_LINKS` in `src/data/journey.ts`. Logos come from `SOCIAL_ICONS` in `src/lib/icons.ts`.
+`SOCIAL_LINKS` in `src/data/journey.ts`. Logos come from `SOCIAL_ICONS` in `src/lib/icons.ts`. Every link goes through the contact transmission described in the [architecture](architecture.md#contact-transmission).

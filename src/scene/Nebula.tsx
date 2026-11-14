@@ -53,7 +53,7 @@ export function NebulaView({ nebula }: { readonly nebula: Nebula }): JSX.Element
         ))}
       </group>
       <TechBadge techId={nebula.techId} size={3.2} opacity={0.9} />
-      <SpaceLabel position={[0, -8, 0]} far={260} visible={!anyFocus}>
+      <SpaceLabel position={[0, -8, 0]} far={260} visible={!anyFocus} collide>
         <div className="space-label space-label--static">
           <span className="space-label__title">{m.labels.nebula(tech.name)}</span>
           <span className="space-label__body">{tx(nebula.description)}</span>

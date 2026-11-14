@@ -21,6 +21,8 @@ interface UniverseStore {
   projectId: string | null;
   chapter: ChapterId;
   hovering: boolean;
+  /** Free look across the constellation: drag pans the camera, scroll is locked. */
+  exploring: boolean;
   setFocus: (focus: Focus) => void;
   goBack: () => void;
   select: (selection: Selection) => void;
@@ -28,6 +30,7 @@ interface UniverseStore {
   closeProject: () => void;
   setChapter: (chapter: ChapterId) => void;
   setHovering: (hovering: boolean) => void;
+  setExploring: (exploring: boolean) => void;
 }
 
 const NO_FOCUS: Focus = { kind: "none" };
@@ -39,7 +42,8 @@ export const useUniverse = create<UniverseStore>()((set, get) => ({
   projectId: null,
   chapter: "ignition",
   hovering: false,
-  setFocus: (focus: Focus): void => set({ focus, selection: NO_SELECTION }),
+  exploring: false,
+  setFocus: (focus: Focus): void => set({ focus, selection: NO_SELECTION, exploring: false }),
   goBack: (): void => {
     const { focus, projectId } = get();
     if (projectId) {
@@ -57,9 +61,10 @@ export const useUniverse = create<UniverseStore>()((set, get) => ({
   openProject: (id: string): void => set({ projectId: id }),
   closeProject: (): void => set({ projectId: null }),
   setChapter: (chapter: ChapterId): void => {
-    if (get().chapter !== chapter) set({ chapter, selection: NO_SELECTION });
+    if (get().chapter !== chapter) set({ chapter, selection: NO_SELECTION, exploring: false });
   },
   setHovering: (hovering: boolean): void => {
     if (get().hovering !== hovering) set({ hovering });
   },
+  setExploring: (exploring: boolean): void => set({ exploring }),
 }));

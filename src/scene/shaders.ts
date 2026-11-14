@@ -101,11 +101,24 @@ void main() {
 }
 `;
 
-export const PLANET_FRAGMENT: string = /* glsl */ `
+/**
+ * Earth at night. With the map loaded it draws real land (R), Colombia (G)
+ * and borders (B); a close-up texture sharpens the area around Colombia.
+ * The contact signal spreads from uOrigin across Colombia only.
+ */
+export const EARTH_FRAGMENT: string = /* glsl */ `
 uniform float uTime;
+uniform sampler2D uWorld;
+uniform sampler2D uRegion;
+uniform float uHasMap;
+uniform vec4 uRegionBounds;
+uniform vec3 uOrigin;
+uniform float uSignal;
+uniform float uSignalGlow;
 varying vec3 vNormal;
 varying vec3 vView;
 varying vec3 vLocal;
+varying vec2 vUv;
 
 float hash(vec3 p) { return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
 float noise(vec3 p) {
@@ -124,30 +137,68 @@ float fbm(vec3 p) {
   return value;
 }
 
+vec3 sampleMap(vec3 dir) {
+  vec3 world = texture2D(uWorld, vUv).rgb;
+  float lat = degrees(asin(clamp(dir.y, -1.0, 1.0)));
+  float lon = degrees(atan(dir.z, -dir.x)) - 180.0;
+  if (lon < -180.0) lon += 360.0;
+  vec2 regionUv = vec2(
+    (lon - uRegionBounds.x) / (uRegionBounds.y - uRegionBounds.x),
+    (lat - uRegionBounds.z) / (uRegionBounds.w - uRegionBounds.z));
+  if (regionUv.x > 0.0 && regionUv.x < 1.0 && regionUv.y > 0.0 && regionUv.y < 1.0) {
+    vec2 edge = min(regionUv, 1.0 - regionUv);
+    return mix(world, texture2D(uRegion, regionUv).rgb, smoothstep(0.0, 0.08, min(edge.x, edge.y)));
+  }
+  return world;
+}
+
 void main() {
-  vec3 p = normalize(vLocal) * 2.2;
-  float land = smoothstep(0.47, 0.53, fbm(p + vec3(0.0, 0.0, uTime * 0.01)));
+  vec3 dir = normalize(vLocal);
+  float land;
+  float home = 0.0;
+  float border = 0.0;
+  if (uHasMap > 0.5) {
+    vec3 map = sampleMap(dir);
+    land = map.r;
+    home = map.g;
+    border = map.b;
+  } else {
+    land = smoothstep(0.47, 0.53, fbm(dir * 2.2 + vec3(0.0, 0.0, uTime * 0.01)));
+  }
+  vec3 amber = vec3(1.0, 0.72, 0.38);
   vec3 ocean = vec3(0.01, 0.05, 0.14);
-  vec3 ground = vec3(0.03, 0.08, 0.06);
+  vec3 ground = vec3(0.05, 0.11, 0.08);
   vec3 base = mix(ocean, ground, land);
   float lightSide = smoothstep(-0.2, 0.6, dot(vNormal, normalize(vec3(-0.4, 0.8, 0.5))));
-  float cities = step(0.72, noise(vLocal * 28.0)) * land * (1.0 - lightSide);
-  vec3 color = base * (0.35 + lightSide * 0.9) + vec3(1.0, 0.72, 0.38) * cities * 0.9;
+  float cities = step(0.78, noise(vLocal * 28.0)) * land * (1.0 - lightSide);
+  vec3 color = base * (0.35 + lightSide * 0.9) + amber * cities * 0.75;
+  color += vec3(0.55, 0.45, 0.3) * border * (0.08 + lightSide * 0.14);
+  color += amber * home * 0.05;
+
+  float distance = acos(clamp(dot(dir, uOrigin), -1.0, 1.0));
+  float filled = (1.0 - smoothstep(uSignal - 0.012, uSignal, distance)) * home;
+  float front = exp(-pow((distance - uSignal) / 0.006, 2.0)) * home;
+  float ripple = 0.65 + 0.35 * sin(uTime * 7.0 - distance * 140.0);
+  float outline = border * smoothstep(0.0, 0.4, home) * step(distance, uSignal + 0.004);
+  color += amber * (filled * 0.5 * ripple + front * 1.8 + outline * 1.2) * uSignalGlow;
+
   float rim = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.0);
   color += vec3(0.25, 0.55, 1.0) * rim * 0.9;
   gl_FragColor = vec4(color, 1.0);
 }
 `;
 
-export const PLANET_VERTEX: string = /* glsl */ `
+export const EARTH_VERTEX: string = /* glsl */ `
 varying vec3 vNormal;
 varying vec3 vView;
 varying vec3 vLocal;
+varying vec2 vUv;
 void main() {
   vec4 worldPosition = modelMatrix * vec4(position, 1.0);
   vNormal = normalize(mat3(modelMatrix) * normal);
   vView = normalize(cameraPosition - worldPosition.xyz);
   vLocal = position;
+  vUv = uv;
   gl_Position = projectionMatrix * viewMatrix * worldPosition;
 }
 `;
