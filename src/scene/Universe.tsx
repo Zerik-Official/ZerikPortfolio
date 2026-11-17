@@ -48,19 +48,19 @@ export function Universe(): JSX.Element {
         <GalaxyView key={galaxy.id} galaxy={galaxy} density={density} />
       ))}
       {NEBULAE.map((nebula: Nebula): JSX.Element => (
-        <StopGate key={nebula.id} from={3.2} to={6.8}>
+        <StopGate key={nebula.id} from={3.2} to={7.8}>
           <NebulaView nebula={nebula} />
         </StopGate>
       ))}
-      <StopGate from={6.2} to={7.6}>
+      <StopGate from={7.2} to={8.6}>
         {BLACK_HOLES.map((hole: BlackHole): JSX.Element => (
           <BlackHoleView key={hole.techId} hole={hole} />
         ))}
       </StopGate>
-      <StopGate from={7.2} to={8.6}>
+      <StopGate from={8.2} to={9.6}>
         <ToolConstellation />
       </StopGate>
-      <StopGate from={8.35} to={9}>
+      <StopGate from={9.35} to={10}>
         <Earth />
       </StopGate>
       {/* Compiles every shader and uploads every texture up front, so no chapter stalls the first time it appears. */}
