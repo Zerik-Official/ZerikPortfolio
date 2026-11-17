@@ -16,7 +16,7 @@ import { journey } from "@/state/journey";
 import { type Focus, useUniverse } from "@/state/store";
 
 /** Galaxies fade out past this journey stop, once the black holes come into view. */
-const GALAXIES_UNTIL: number = 7.1;
+const GALAXIES_UNTIL: number = 8.1;
 /** Galaxy labels wait until the learning belt is behind, so they never cover it. */
 const LABELS_FROM: number = 2.55;
 
@@ -46,7 +46,8 @@ function buildGeometry(galaxy: Galaxy, radius: number, count: number): BufferGeo
     orbits[i * 3 + 2] = (random() - 0.5) * radius * 0.1 * (1.25 - r / radius);
     sizes[i] = 0.35 + random() * 0.9;
     const core: number = 1 - r / radius;
-    const hue: number = (galaxy.hue + (random() - 0.5) * 36 + 360) % 360;
+    const armHue: number = galaxy.accentHue !== undefined && arm % 2 === 1 ? galaxy.accentHue : galaxy.hue;
+    const hue: number = (armHue + (random() - 0.5) * 36 + 360) % 360;
     color.setHSL(hue / 360, 0.85 - core * 0.45, 0.55 + core * 0.3 + random() * 0.1);
     colors[i * 3] = color.r;
     colors[i * 3 + 1] = color.g;
@@ -112,7 +113,8 @@ export function GalaxyView({ galaxy, density }: GalaxyViewProps): JSX.Element {
     const fov: number = (state.camera as { fov?: number }).fov ?? 55;
     (uniforms.uScale as { value: number }).value = (state.size.height * state.viewport.dpr * 0.5) / Math.tan((fov * Math.PI) / 360) * 0.5;
     const reveal: number = clamp((400 - journey.viewer.distanceTo(center)) / 150) * clamp((GALAXIES_UNTIL - journey.stop) / 0.4) * clamp((journey.stop - 1.4) / 0.6);
-    const target: number = here ? (systemId ? 0.3 : 0.75) : (anyFocus ? 0.12 : hovered ? 1.35 : 1) * reveal;
+    const behindBelt: number = 0.45 + 0.55 * clamp((journey.stop - 2.3) / 0.5);
+    const target: number = here ? (systemId ? 0.3 : 0.75) : (anyFocus ? 0.12 : hovered ? 1.35 : 1) * reveal * behindBelt;
     const opacity = uniforms.uOpacity as { value: number };
     opacity.value += (target - opacity.value) * dampFactor(4, delta);
     if (coreMaterial) coreMaterial.opacity = opacity.value * 0.9;
