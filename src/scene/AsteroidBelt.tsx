@@ -100,7 +100,7 @@ function NamedAsteroid({ asteroid, position, index }: NamedAsteroidProps): JSX.E
           <meshStandardMaterial color={active ? "#c9a27a" : "#7d7366"} roughness={0.9} flatShading emissive="#ffb36b" emissiveIntensity={active ? 0.25 : 0} />
         </mesh>
       </group>
-      <TechBadge techId={asteroid.techId} size={active ? 2.1 : 1.7} position={[0, 2.8, 0]} onClick={choose} {...pointer} />
+      <TechBadge techId={asteroid.techId} size={active ? 2.5 : 2.1} brightness={active ? 0.9 : 0.68} position={[0, 3, 0]} onClick={choose} {...pointer} />
       <SpaceLabel position={[0, -2.6, 0]} far={70} collide priority={active ? 1 : 0}>
         <button type="button" className="asteroid-tag" data-active={active} onClick={(): void => choose()}>
           {asteroid.name}
