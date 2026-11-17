@@ -116,7 +116,7 @@
   }
 
   .chapter-band {
-    background: linear-gradient(to bottom, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.35) 65%, transparent);
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.8), rgb(0 0 0 / 0.5) 60%, transparent);
   }
 
   .wide {
@@ -229,6 +229,7 @@
     transition: max-height 0.45s var(--ease-orbit), opacity 0.45s;
   }
 
+  .space-label--open .space-label__body,
   .space-label:focus-visible .space-label__body,
   .space-label[data-hovered="true"] .space-label__body {
     max-height: 8rem;
