@@ -51,9 +51,11 @@ export function CameraRig(): null {
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     window.addEventListener("pointermove", onPointer, { passive: true });
     return (): void => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       window.removeEventListener("pointermove", onPointer);
     };
   }, []);
