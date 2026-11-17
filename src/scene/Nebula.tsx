@@ -1,5 +1,5 @@
-import { useFrame } from "@react-three/fiber";
-import { type JSX, useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { type JSX, useMemo, useRef, useState } from "react";
 import { AdditiveBlending, type Group } from "three";
 
 import { getTech } from "@/data/techs";
@@ -23,6 +23,9 @@ export function NebulaView({ nebula }: { readonly nebula: Nebula }): JSX.Element
   const { m, tx } = useI18n();
   const tech = getTech(nebula.techId);
   const anyFocus: boolean = useUniverse((state) => state.focus.kind !== "none");
+  // On narrow portrait screens both nebulae share the view, so the description opens on tap.
+  const portrait: boolean = useThree((state) => state.size.width / state.size.height < 0.9);
+  const [open, setOpen] = useState<boolean>(false);
   const puffs: readonly Puff[] = useMemo((): Puff[] => {
     const random: () => number = createRandom(hashString(nebula.id));
     return Array.from({ length: 34 }, (): Puff => {
@@ -53,11 +56,16 @@ export function NebulaView({ nebula }: { readonly nebula: Nebula }): JSX.Element
         ))}
       </group>
       <TechBadge techId={nebula.techId} size={3.2} opacity={0.9} />
-      <SpaceLabel position={[0, -8, 0]} far={260} visible={!anyFocus} collide>
-        <div className="space-label space-label--static">
+      <SpaceLabel position={[0, -8, 0]} far={260} visible={!anyFocus} collide priority={open ? 1 : 0}>
+        <button
+          type="button"
+          className={`space-label space-label--static ${!portrait || open ? "space-label--open" : ""}`}
+          aria-expanded={!portrait || open}
+          onClick={(): void => setOpen(!open)}
+        >
           <span className="space-label__title">{m.labels.nebula(tech.name)}</span>
           <span className="space-label__body">{tx(nebula.description)}</span>
-        </div>
+        </button>
       </SpaceLabel>
     </group>
   );
