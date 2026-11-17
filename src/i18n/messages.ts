@@ -5,13 +5,20 @@ function plural(count: number, one: string, many: string): string {
   return `${count} ${count === 1 ? one : many}`;
 }
 
+/** One line of the pilot's record: what it is, the role or title, and where/when. */
+export interface Credential {
+  readonly label: string;
+  readonly title: string;
+  readonly detail: string;
+}
+
 export interface Messages {
   readonly meta: { readonly title: string; readonly description: string };
   readonly intro: { readonly tagline: string; readonly role: string; readonly quote: string; readonly scroll: string };
   readonly about: {
     readonly bio: string;
-    readonly job: string;
-    readonly study: string;
+    readonly credentials: readonly Credential[];
+    readonly focusTitle: string;
     readonly focus: readonly string[];
   };
   readonly hud: {
@@ -104,8 +111,11 @@ const ES: Messages = {
   },
   about: {
     bio: "Soy Andrés, conocido como Zerik. Llevo más de tres años automatizando procesos y construyendo herramientas que resuelven problemas reales. Python es mi hogar; la ingeniería inversa, mi curiosidad.",
-    job: "Desarrollador de automatización y Sub-Jefe del departamento · NaerZone · 2023–2026",
-    study: "Desarrollo de Software · Riwi · Barranquilla",
+    credentials: [
+      { label: "Formación", title: "Desarrollo de Software", detail: "Riwi · Barranquilla" },
+      { label: "Experiencia", title: "Desarrollador de automatización y Sub-Jefe del departamento", detail: "NaerZone · 2023–2026" },
+    ],
+    focusTitle: "En lo que trabajo",
     focus: [
       "Automatización end-to-end con Python y Playwright",
       "Backends con FastAPI y Flask",
@@ -204,8 +214,11 @@ const EN: Messages = {
   },
   about: {
     bio: "I'm Andrés, known as Zerik. For more than three years I've been automating processes and building tools that solve real problems. Python is my home; reverse engineering, my curiosity.",
-    job: "Automation developer and deputy head of the department · NaerZone · 2023–2026",
-    study: "Software Development · Riwi · Barranquilla",
+    credentials: [
+      { label: "Education", title: "Software Development", detail: "Riwi · Barranquilla" },
+      { label: "Experience", title: "Automation developer and deputy head of the department", detail: "NaerZone · 2023–2026" },
+    ],
+    focusTitle: "What I work on",
     focus: [
       "End-to-end automation with Python and Playwright",
       "Backends with FastAPI and Flask",
