@@ -9,7 +9,8 @@ export const GALAXIES: readonly Galaxy[] = [
       "Mi galaxia principal. Aquí nacen los backends, los clientes de red y las herramientas de automatización.",
       "My home galaxy. This is where backends, network clients and automation tools are born.",
     ),
-    hue: 46,
+    hue: 208,
+    accentHue: 48,
     size: "major",
     arms: 4,
     position: [-72, 6, -360],
@@ -80,14 +81,14 @@ export const NEBULAE: readonly Nebula[] = [
       "Not a programming language but a nebula: the matter every interface is made of.",
     ),
     color: "#e44d26",
-    position: [14, 62, -596],
+    position: [16, 56, -600],
   },
   {
     id: "css",
     techId: "css",
     description: l("La nebulosa gemela: luz, color y forma para esa materia.", "The twin nebula: light, color and shape for that matter."),
     color: "#2f8fe0",
-    position: [42, 72, -620],
+    position: [34, 82, -614],
   },
 ];
 

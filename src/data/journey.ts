@@ -32,6 +32,7 @@ export const KEYFRAMES: readonly Keyframe[] = [
   { chapter: "galaxies", position: [-18, 28, -212], lookAt: [-72, 6, -360] },
   { chapter: "galaxies", position: [10, 34, -440], lookAt: [92, 22, -470] },
   { chapter: "galaxies", position: [12, 30, -498], lookAt: [96, -10, -612] },
+  { chapter: "galaxies", position: [26, 66, -552], lookAt: [25, 66, -607] },
   { chapter: "galaxies", position: [-30, 24, -560], lookAt: [-62, 4, -720] },
   { chapter: "blackholes", position: [0, 0, -900], lookAt: [0, -10, -1004] },
   { chapter: "tools", position: [-14, 9, -1172], lookAt: [-8, 7, -1262] },

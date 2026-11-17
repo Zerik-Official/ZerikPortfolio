@@ -57,7 +57,7 @@ export function Hud(): JSX.Element {
   };
 
   return (
-    <div className="overlay inset-0 z-10 text-[0.55rem] tracking-[0.18em] text-mute uppercase md:text-[0.68rem] md:tracking-[0.3em]">
+    <div className="overlay inset-0 z-[25] text-[0.55rem] tracking-[0.18em] text-mute uppercase md:text-[0.68rem] md:tracking-[0.3em]">
       <div className="legible fixed top-[calc(18px+env(safe-area-inset-top,0px))] left-3.5 md:left-[22px]">
         <b className="mb-1.5 block font-light text-ink">Zerik</b>
         <span aria-live="polite">{chapter ? tx(chapter.name) : ""}</span>

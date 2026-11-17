@@ -90,6 +90,8 @@ export interface Galaxy {
   readonly techId: TechId;
   readonly description: Localized;
   readonly hue: number;
+  /** Hue of every other arm, for languages with a two-colour identity. */
+  readonly accentHue?: number;
   readonly size: GalaxySize;
   readonly arms: number;
   readonly position: readonly [number, number, number];

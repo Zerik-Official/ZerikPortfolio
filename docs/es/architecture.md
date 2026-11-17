@@ -25,7 +25,7 @@ Todo lo que se muestra sale de los registros tipados en `src/data/`, así que ca
 
 - `src/data/journey.ts` define los **keyframes** de la cámara y los **capítulos** a los que pertenecen.
 - `CameraRig` convierte el progreso del scroll en una posición entre keyframes, con una pausa suavizada en cada parada, paralaje con el puntero y un alejamiento en pantallas angostas.
-- El capítulo de galaxias tiene una parada por galaxia principal, en este orden: Python, JavaScript, TypeScript y C++ (con Lua como compañera).
+- El capítulo de galaxias tiene una parada por galaxia principal y otra para las nebulosas, en este orden: Python, JavaScript, TypeScript, las nebulosas de HTML y CSS, y C++ (con Lua como compañera).
 - Al enfocar una galaxia, un sistema o un agujero negro, la cámara vuela a su pose y el scroll queda bloqueado hasta que el visitante vuelve.
 - En la constelación, **Explorar** (`ExploreToggle`) bloquea el scroll y permite arrastrar la cámara en ambas direcciones dentro de unos límites; **Listo** o Escape vuelven al recorrido.
 - El progreso del scroll se mide contra la altura del viewport grande (`scrollRange` en `src/state/journey.ts`), así que la barra de direcciones del móvil al aparecer o esconderse no mueve la cámara. Por la misma razón el canvas mide `100lvh`.
