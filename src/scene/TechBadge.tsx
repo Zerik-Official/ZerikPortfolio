@@ -10,13 +10,15 @@ interface TechBadgeProps {
   readonly size: number;
   readonly position?: Vec3;
   readonly opacity?: number;
+  /** Brightness of the badge; below 1 it blooms less, so the logo stays legible. */
+  readonly brightness?: number;
   readonly onClick?: (event: ThreeEvent<MouseEvent>) => void;
   readonly onPointerOver?: (event: ThreeEvent<PointerEvent>) => void;
   readonly onPointerOut?: (event: ThreeEvent<PointerEvent>) => void;
 }
 
 /** Camera-facing sprite showing a technology's real logo. */
-export function TechBadge({ techId, size, position = [0, 0, 0], opacity = 1, onClick, onPointerOver, onPointerOut }: TechBadgeProps): JSX.Element | null {
+export function TechBadge({ techId, size, position = [0, 0, 0], opacity = 1, brightness = 1, onClick, onPointerOver, onPointerOut }: TechBadgeProps): JSX.Element | null {
   const texture = useBadgeTexture(techId);
   if (!texture) return null;
   return (
@@ -27,7 +29,7 @@ export function TechBadge({ techId, size, position = [0, 0, 0], opacity = 1, onC
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      <spriteMaterial map={texture} transparent opacity={opacity} depthWrite={false} toneMapped={false} />
+      <spriteMaterial map={texture} color={[brightness, brightness, brightness]} transparent opacity={opacity} depthWrite={false} toneMapped={false} />
     </sprite>
   );
 }
