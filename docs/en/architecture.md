@@ -25,7 +25,7 @@ Everything shown comes from the typed records in `src/data/`, so each project li
 
 - `src/data/journey.ts` lists camera **keyframes** and the **chapters** they belong to.
 - `CameraRig` maps the scroll progress to a position between keyframes, with an eased dwell at each stop, pointer parallax and a pull-back on narrow screens.
-- The galaxies chapter has one stop per main galaxy, in this order: Python, JavaScript, TypeScript and C++ (with Lua as its companion).
+- The galaxies chapter has one stop per main galaxy and one for the nebulae, in this order: Python, JavaScript, TypeScript, the HTML and CSS nebulae, and C++ (with Lua as its companion).
 - When a galaxy, system or black hole is focused, the rig flies to its pose and the page scroll is locked until the visitor goes back.
 - In the constellation, **Explore** (`ExploreToggle`) locks the scroll and lets the visitor drag the camera in both directions within fixed limits; **Done** or Escape returns to the journey.
 - Scroll progress is measured against the large viewport height (`scrollRange` in `src/state/journey.ts`), so a mobile address bar sliding in or out does not nudge the camera. The canvas is sized to `100lvh` for the same reason.
