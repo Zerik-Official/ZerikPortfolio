@@ -2,6 +2,7 @@ import type { JSX } from "react";
 
 import { CHAPTERS, type Chapter } from "@/data/journey";
 import { useOverlayFade } from "@/hooks/useOverlayFade";
+import type { Credential } from "@/i18n/messages";
 import { useI18n } from "@/i18n/useI18n";
 import { clamp, windowRamp } from "@/lib/math";
 import type { JourneyState } from "@/state/journey";
@@ -39,20 +40,30 @@ export function About(): JSX.Element {
     <section
       ref={ref}
       aria-label={pilot ? tx(pilot.name) : undefined}
-      className="overlay scrim inset-0 flex flex-wrap content-center items-center justify-center gap-[3vh] px-[7vw] md:gap-[6vw]"
+      className="overlay scrim inset-0 flex flex-col items-center justify-center gap-[2.5vh] px-[7vw] md:flex-row md:items-center md:gap-[5vw]"
     >
-      <div className="max-w-[30ch]">
-        <p className="serif legible m-0 text-[1.25rem] leading-[1.35] md:text-[clamp(1.4rem,2.8vw,2.1rem)]">{m.about.bio}</p>
-        <p className="kicker legible mt-5 mb-0">{m.about.study}</p>
-        <p className="kicker legible mt-2 mb-0">{m.about.job}</p>
+      <div className="w-full max-w-[40ch] md:max-w-[34rem]">
+        <p className="serif legible m-0 text-[1.1rem] leading-[1.35] md:text-[clamp(1.35rem,1.9vw,1.8rem)] md:leading-[1.4]">{m.about.bio}</p>
+        <dl className="m-0 mt-4 grid gap-2.5 md:mt-8 md:gap-3">
+          {m.about.credentials.map((credential: Credential): JSX.Element => (
+            <div key={credential.label} className="legible border-t border-line pt-2.5 md:pt-3">
+              <dt className="kicker text-amber">{credential.label}</dt>
+              <dd className="m-0 mt-1 text-[0.85rem] leading-snug text-ink md:mt-1.5 md:text-[0.95rem]">{credential.title}</dd>
+              <dd className="m-0 mt-0.5 text-[0.78rem] tracking-[0.08em] text-mute">{credential.detail}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-      <ul className="m-0 max-w-[34ch] list-none p-0 text-[0.92rem] text-ink/85 md:text-base">
-        {m.about.focus.map((item: string): JSX.Element => (
-          <li key={item} className="legible my-2 border-l border-amber pl-3.5 leading-normal">
-            {item}
-          </li>
-        ))}
-      </ul>
+      <div className="w-full max-w-[40ch] md:w-auto md:max-w-[30ch]">
+        <p className="kicker legible m-0 mb-3 hidden text-amber md:block">{m.about.focusTitle}</p>
+        <ul className="m-0 list-none p-0 text-[0.85rem] text-ink/85 md:text-base">
+          {m.about.focus.map((item: string): JSX.Element => (
+            <li key={item} className="legible my-1.5 border-l border-amber pl-3.5 leading-snug md:my-2 md:leading-normal">
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
@@ -69,7 +80,7 @@ export function ChapterTitle(): JSX.Element {
   return (
     <div ref={ref} role="status" className="overlay chapter-band inset-x-0 top-0 px-5 pt-[11vh] pb-12 text-center">
       <h2 className="wide legible m-0 text-[clamp(1.2rem,4vw,2.8rem)]">{chapter ? tx(chapter.name) : ""}</h2>
-      <p className="serif legible mt-3 mb-0 text-[clamp(1rem,2vw,1.35rem)] text-ink/80">{chapter?.subtitle ? tx(chapter.subtitle) : ""}</p>
+      <p className="serif legible mt-3 mb-0 text-[clamp(1rem,2vw,1.35rem)] text-ink">{chapter?.subtitle ? tx(chapter.subtitle) : ""}</p>
     </div>
   );
 }
